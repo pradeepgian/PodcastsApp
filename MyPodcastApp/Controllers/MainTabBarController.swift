@@ -11,6 +11,8 @@ class MainTabBarController : UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //Set this property to true for displaying large titles below navigation bar
+        UINavigationBar.appearance().prefersLargeTitles = true
         tabBar.tintColor = .purple
         setupViewControllers()
     }

@@ -2,8 +2,7 @@
 //  PodcastsSearchController.swift
 //  PodcastsCourseLBTA
 //
-//  Created by Pradeep Gianchandani on 07/10/20.
-//  Copyright © 2020 Brian Voong. All rights reserved.
+//  Created by Pradeep Gianchandani on 07/10/20
 //
 
 import UIKit
@@ -16,7 +15,7 @@ class PodcastsSearchController: UITableViewController, UISearchBarDelegate {
     let searchController = UISearchController(searchResultsController: nil)
     
 //    var podcasts = [
-//        Podcast(trackName: "Lets Build That App", artistName: "Brian Voong"),
+//        Podcast(trackName: "Lets Build Podcast App", artistName: "ABC"),
 //        Podcast(trackName: "Some Podcast", artistName: "Some Author"),
 //    ]
     var podcasts = [Podcast]()
@@ -46,6 +45,9 @@ class PodcastsSearchController: UITableViewController, UISearchBarDelegate {
     }
     
     fileprivate func setupSearchController() {
+        self.definesPresentationContext = true //This property needs to be set to true other presented view controller wont display the podcast title
+        //This property is used to decide which view controller will determine the size of the presented view controller's view
+        //If this property is set to false, then presentation context is provided by UITableViewController instead of PodcastsViewController
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         searchController.obscuresBackgroundDuringPresentation = false // if this is set to true, it dims the background when search bar pops up

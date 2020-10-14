@@ -3,7 +3,6 @@
 //  PodcastsCourseLBTA
 //
 //  Created by Pradeep Gianchandani on 07/10/20.
-//  Copyright © 2020 Brian Voong. All rights reserved.
 //
 
 import Foundation

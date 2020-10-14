@@ -57,6 +57,15 @@ class EpisodesController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+        
+        let playerDetailsView = Bundle.main.loadNibNamed("PlayerDetailsView", owner: self, options: nil)?.first as! PlayerDetailsView
+        playerDetailsView.episode = episodes[indexPath.row]
+        playerDetailsView.frame = self.view.frame
+        window?.addSubview(playerDetailsView)
+    }
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 134
     }
