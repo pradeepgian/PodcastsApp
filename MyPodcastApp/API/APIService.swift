@@ -37,8 +37,15 @@ class APIService {
 //        let secureFeedUrl = feedUrl.toSecureHTTPS()
         
         guard let url = URL(string: feedUrl) else { return }
+        
+        //In older Feedkit API, in init method, this parser used to fetch the xml synchronously on UI thread
+        //That means it used to block UI thread for brief moment
+        //Hence we had to move the entire code in asynchronous request
+        print("Before Parser")
         let parser = FeedParser(URL: url)
-        parser.parseAsync(queue: DispatchQueue.global(qos: .userInitiated)) { (result) in
+        print("After Parser")
+        
+        parser.parseAsync(queue: DispatchQueue.global(qos: .background)) { (result) in
             
             switch result {
             case .success(let feed):

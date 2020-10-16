@@ -61,13 +61,15 @@ class PlayerDetailsView: UIView {
         
         observePlayerCurrentTime()
         
-        let time = CMTimeMake(value: 1, timescale: 3)
+        //CMTimeMake(1,10) actually means a value of 1 and a timescale of 10. They are a numerator and denominator, so it is 1/10 of a second
+        let time = CMTimeMake(value: 1, timescale: 3) //here the result is 1/3rd of a second
         let times = [NSValue(time: time)]
         
         // player has a reference to self
         // self has a reference to player
         player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
             print("Episode started playing")
+            //Requests invocation of this block when playback traverses 1/3 of a second during normal playback.
             self?.enlargeEpisodeImageView()
         }
     }
@@ -97,7 +99,7 @@ class PlayerDetailsView: UIView {
     }
     
     fileprivate func seekToCurrentTime(delta: Int64) {
-        let fifteenSeconds = CMTimeMake(value: delta, timescale: 1)
+        let fifteenSeconds = CMTimeMake(value: delta, timescale: 1) //here result will be 15/1 or -15/1
         let seekTime = CMTimeAdd(player.currentTime(), fifteenSeconds)
         player.seek(to: seekTime)
     }
@@ -115,6 +117,7 @@ class PlayerDetailsView: UIView {
     
     fileprivate func enlargeEpisodeImageView() {
         UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            //here .identity value will transform the image to original state (or dimensions)
             self.episodeImageView.transform = .identity
         })
     }
