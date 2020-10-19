@@ -46,6 +46,17 @@ class EpisodesController: UITableViewController {
 
     //MARK:- UITableView
     
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let activityIndicatorView = UIActivityIndicatorView(style: .large)
+        activityIndicatorView.color = .darkGray
+        activityIndicatorView.startAnimating()
+        return activityIndicatorView
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return episodes.isEmpty ? 200 : 0
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return episodes.count
     }
@@ -58,12 +69,14 @@ class EpisodesController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
-        
-        let playerDetailsView = Bundle.main.loadNibNamed("PlayerDetailsView", owner: self, options: nil)?.first as! PlayerDetailsView
-        playerDetailsView.episode = episodes[indexPath.row]
-        playerDetailsView.frame = self.view.frame
-        window?.addSubview(playerDetailsView)
+//        let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+//
+//        let playerDetailsView = Bundle.main.loadNibNamed("PlayerDetailsView", owner: self, options: nil)?.first as! PlayerDetailsView
+//        playerDetailsView.episode = episodes[indexPath.row]
+//        playerDetailsView.frame = self.view.frame
+        let episode = self.episodes[indexPath.row]
+        let mainTabBarController = UIApplication.mainTabBarController()
+        mainTabBarController?.maximizePlayerDetails(episode: episode)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

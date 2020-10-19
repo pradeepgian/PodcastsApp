@@ -44,6 +44,15 @@ class PodcastsSearchController: UITableViewController, UISearchBarDelegate {
         self.podcasts.count > 0 ? 0 : 100
     }
     
+    var podcastSearchView = Bundle.main.loadNibNamed("PodcastsSearchingView", owner: self, options: nil)?.first as? UIView
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return podcastSearchView
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return podcasts.isEmpty && searchController.searchBar.text?.isEmpty == false ? 200 : 0
+    }
+    
     fileprivate func setupSearchController() {
         self.definesPresentationContext = true //This property needs to be set to true other presented view controller wont display the podcast title
         //This property is used to decide which view controller will determine the size of the presented view controller's view
@@ -53,6 +62,8 @@ class PodcastsSearchController: UITableViewController, UISearchBarDelegate {
         searchController.obscuresBackgroundDuringPresentation = false // if this is set to true, it dims the background when search bar pops up
         searchController.searchBar.delegate = self
     }
+    
+    //MARK:- UITableView
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return podcasts.count
@@ -73,19 +84,24 @@ class PodcastsSearchController: UITableViewController, UISearchBarDelegate {
         self.navigationController?.pushViewController(episodesVC, animated: true)
     }
     
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print(searchText)
-        APIService.shared.fetchPodcasts(searchText: searchText) { (podcastsData) in
-            self.podcasts = podcastsData
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
-    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 132
+    }
+    
+    //MARK:- UISearchbar Delegate Methods
+    var timer:Timer?
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        timer?.invalidate()
+        print(searchText)
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (_) in
+            APIService.shared.fetchPodcasts(searchText: searchText) { (podcastsData) in
+                self.podcasts = podcastsData
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            }
+        })
+        
     }
     
 }
