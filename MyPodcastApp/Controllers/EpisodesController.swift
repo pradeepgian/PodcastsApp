@@ -34,10 +34,68 @@ class EpisodesController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
+        setupNavigationBarButtons()
     }
     
     //MARK:- Setup Work
     
+    fileprivate func setupNavigationBarButtons() {
+        //let's check if we have already saved this podcast as favorite
+        let savedPodcasts = UserDefaults.standard.savedPodcasts()
+        let hasFavorited = savedPodcasts.firstIndex(where: { $0.trackName == self.podcast?.trackName && $0.artistName == self.podcast?.artistName }) != nil
+        if hasFavorited {
+            // setting up our heart icon
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "heart"), style: .plain, target: nil, action: nil)
+        } else {
+            navigationItem.rightBarButtonItems = [
+                UIBarButtonItem(title: "Favorite", style: .plain, target: self, action: #selector(handleSaveFavorite)),
+//                UIBarButtonItem(title: "Fetch", style: .plain, target: self, action: #selector(handleFetchSavedPodcasts))
+            ]
+        }
+        
+    }
+
+    @objc fileprivate func handleFetchSavedPodcasts() {
+        print("Fetching saved Podcasts from UserDefaults")
+        // how to retrieve our Podcast object from UserDefaults
+        guard let data = UserDefaults.standard.data(forKey: UserDefaults.favoritedPodcastKey) else { return }
+        
+//        let savedPodcasts = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Podcast]
+        
+        do {
+            let savedPodcasts = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data as Data) as? [Podcast]
+            savedPodcasts?.forEach({ (p) in
+                print(p.trackName ?? "")
+            })
+        }
+    }
+    
+    @objc fileprivate func handleSaveFavorite() {
+        print("Saving info into UserDefaults")
+        
+        guard let podcast = self.podcast else { return }
+        
+        // 1. Transform Podcast into Data
+        // 2. In order to make encoding method available on podcast custom object, we have to confirm podcast model to NSCoding protocol
+        var listOfPodcasts = UserDefaults.standard.savedPodcasts()
+        listOfPodcasts.append(podcast)
+        //We cannot add custom model object in userdefaults. Hence we transform podcast into data
+        
+        do {
+            let data = try NSKeyedArchiver.archivedData(withRootObject: listOfPodcasts, requiringSecureCoding: false)
+            UserDefaults.standard.set(data, forKey: UserDefaults.favoritedPodcastKey)
+        } catch {
+            print ("Couldn't transform podcast to data")
+        }
+        
+        
+        showBadgeHighlight()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "heart"), style: .plain, target: nil, action: nil)
+    }
+    
+    fileprivate func showBadgeHighlight() {
+        UIApplication.mainTabBarController()?.viewControllers?[1].tabBarItem.badgeValue = "New"
+    }
     fileprivate func setupTableView() {
         let nib = UINib(nibName: "EpisodeCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: cellId)
