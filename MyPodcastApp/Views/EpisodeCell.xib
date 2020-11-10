@@ -23,6 +23,14 @@
                             <constraint firstAttribute="width" constant="100" id="IY7-8r-s2S"/>
                         </constraints>
                     </imageView>
+                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xnS-4H-VwX">
+                        <rect key="frame" x="27.5" y="98.5" width="77" height="34.5"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                        <color key="shadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <size key="shadowOffset" width="0.0" height="1"/>
+                    </label>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="gIJ-09-fOr">
                         <rect key="frame" x="132" y="82.5" width="359" height="66"/>
                         <subviews>
@@ -49,16 +57,19 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="G5G-hE-Gev" firstAttribute="leading" secondItem="5AG-Vf-sF9" secondAttribute="leading" constant="16" id="CcM-Lz-mdH"/>
+                    <constraint firstItem="xnS-4H-VwX" firstAttribute="centerY" secondItem="G5G-hE-Gev" secondAttribute="centerY" id="O5Z-x3-Wje"/>
                     <constraint firstItem="G5G-hE-Gev" firstAttribute="centerY" secondItem="5AG-Vf-sF9" secondAttribute="centerY" id="Ohr-ka-vLo"/>
                     <constraint firstItem="gIJ-09-fOr" firstAttribute="leading" secondItem="G5G-hE-Gev" secondAttribute="trailing" constant="16" id="YlK-dT-gtB"/>
                     <constraint firstItem="gIJ-09-fOr" firstAttribute="centerY" secondItem="5AG-Vf-sF9" secondAttribute="centerY" id="oC3-9t-f8I"/>
                     <constraint firstAttribute="trailingMargin" secondItem="gIJ-09-fOr" secondAttribute="trailing" id="tdt-HE-Y74"/>
+                    <constraint firstItem="xnS-4H-VwX" firstAttribute="centerX" secondItem="G5G-hE-Gev" secondAttribute="centerX" id="ttq-zX-xAS"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="wcg-x8-N1e"/>
             <connections>
                 <outlet property="descriptionLabel" destination="BHf-Qd-Jfa" id="KWZ-se-4Hq"/>
                 <outlet property="episodeImageView" destination="G5G-hE-Gev" id="V2a-TW-Fsf"/>
+                <outlet property="progressLabel" destination="xnS-4H-VwX" id="cnT-CH-DD0"/>
                 <outlet property="pubDateLabel" destination="MQl-t6-KVs" id="JRu-2u-rNE"/>
                 <outlet property="titleLabel" destination="cWG-i0-Rvh" id="Y6B-MN-ecM"/>
             </connections>

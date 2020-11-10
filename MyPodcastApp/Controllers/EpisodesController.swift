@@ -104,6 +104,21 @@ class EpisodesController: UITableViewController {
 
     //MARK:- UITableView
     
+    //This method returns an array of actions which should return on left swipe of cell
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let downloadContextItem = UIContextualAction(style: .normal, title: "Download") {  (_, _, _) in
+            print("Downloading episode into UserDefaults")
+            let episode = self.episodes[indexPath.row]
+            UserDefaults.standard.downloadEpisode(episode: episode)
+            
+            // download the podcast episode using Alamofire
+            APIService.shared.downloadEpisode(episode: episode)
+        }
+        let swipeActions = UISwipeActionsConfiguration(actions: [downloadContextItem])
+
+        return swipeActions
+    }
+    
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let activityIndicatorView = UIActivityIndicatorView(style: .large)
         activityIndicatorView.color = .darkGray
